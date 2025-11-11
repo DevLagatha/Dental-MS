@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'simple-test'
+            label 'python-agent'
         }
     }
 
@@ -48,6 +48,7 @@ pipeline {
         stage('Deploy (Local Simulation)') {
             steps {
                 echo "Simulating deployment..."
+                
                 sh 'echo "Flask app would be deployed here (Docker image build, push, etc.)"'
             }
         }
