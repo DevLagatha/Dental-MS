@@ -1,7 +1,29 @@
 pipeline {
     agent {
         kubernetes {
-            label 'python-agent'
+            inheritFrom 'python-agent'
+            agentContainer 'jnlp'
+            cloud 'kubernetes'
+            yaml """
+apiVersion: v1
+kind: Pod
+ spec:
+  containers:
+  - name: python
+    image: python:3.9-slim
+    command: ['cat']
+    tty: true
+  - name: oc
+    image: quay.io/openshift/origin-cli:4.12
+    command: ['cat']
+    tty: true
+  - name: docker
+    image: docker:24-cli     
+    command: ['cat']
+    tty: true
+    
+""" 
+            }
         }
     }
 
@@ -48,7 +70,7 @@ pipeline {
         stage('Deploy (Local Simulation)') {
             steps {
                 echo "Simulating deployment..."
-                
+
                 sh 'echo "Flask app would be deployed here (Docker image build, push, etc.)"'
             }
         }
